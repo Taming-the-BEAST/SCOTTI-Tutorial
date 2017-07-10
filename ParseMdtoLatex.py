@@ -288,7 +288,7 @@ def parseFiguresStepwise(text):
 
 				if (tag == "style"):
 					if (content[1:6].lower() == "width" and content[-3:-1] == '%;'):
-						mult  = int(content[content.find(':')+1:content.find('%')])/100
+						mult  = float(content[content.find(':')+1:content.find('%')])/100
 						scale = "[width=%.6f\\textwidth]" % mult
 					else:
 						sys.stdout.write("WARNING Unsupported image style specification %s in '%.20s...'\n" % (part, caption))

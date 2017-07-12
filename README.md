@@ -11,7 +11,6 @@ figtreeversion: 1.4.3
 # Background
 
 
-
 ----
 
 
@@ -52,7 +51,9 @@ FigTree ([http://tree.bio.ed.ac.uk/software/figtree](http://tree.bio.ed.ac.uk/so
 # Practical
 
 
+
 ----
+
 
 # Useful Links
 
@@ -66,7 +67,5 @@ FigTree ([http://tree.bio.ed.ac.uk/software/figtree](http://tree.bio.ed.ac.uk/so
 # Relevant References
 
 {% bibliography --cited --file Bacter-tutorial/master-refs %}
-
-
 
 

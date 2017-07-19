@@ -81,8 +81,14 @@ When analysing an FMDV outbreak we can treat each infected farm as an infected h
 
 We analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in the South of England. The outbreak contained two distinct clusters, in August and September of 2007, respectively. The dataset contains 11 viral sequences from 10 farms. Four sequences were sampled during the first cluster and a further 7 during the second cluster. In addition, we also have the earliest and latest possible dates during which each farm was infected with the disease. The data were first analysed in {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %} and later reanalysed using SCOTTI in {% cite deMaio2016 --file SCOTTI-Tutorial/master-refs %}. 
 
-Figure caption: 
-Lesion age derived infection profiles of holdings overlaid with the outbreak virus geneology. The orange shading estimates the time when animals with lesions were present from the oldest lesion age at post-mortem. For IP2c, there were no clinical signs of disease. The light blue shading represents incubation periods for each holding, estimated to begin no more than 14 days prior to appearance of lesions. The dark blue shading is the infection date based on the most likely incubation time for this strain of 2-5 days. Each UK 2007 outbreak virus haplotype is plotted according to the time the sample was taken from the affected animal (X axis).
+
+<figure>
+  <a id="fig:outbreak"></a>
+  <img style="width:80.0%;" src="figures/Outbreak.png" alt="">
+  <figcaption>Figure 1: Exposure times of infected farms and sampling dates of the viral sequences (Figure taken from {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %}). The orange shading estimates the time when animals showing symptoms of FMDV were present on a farm. Light blue shading indicates estimates for the incubation time of each farm. The dark blue shading is the infection date estimates in {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %}. The haplotype network of the sequenced strains is superimposed on the exposure times. The red dots indicate the dates of the sampled sequences.
+.</figcaption>
+</figure>
+<br>
 
 
 ## Creating the input files using the included Python script
@@ -117,7 +123,7 @@ Before we can use SCOTTI we have to install the package somewhere where BEAST2 c
 
 > Open a terminal if you are using Mac OS X or Linux, or a Command Prompt if you are using Windows. 
 > 
-> Navigate to the directory where the ` ` script is stored.
+> Navigate to the directory where the `SCOTTI_generate_xml.py` script is stored.
 >
 > Type `python SCOTTI_generate_xml.py --help`
 >
@@ -271,7 +277,15 @@ We should now be ready to run the analysis in BEAST2.
 </figure>
 <br>
 
-The analysis should take between 10 and 20 minutes to run. 
+The analysis should take between 10 and 20 minutes to run. While the analysis is running open the XML file in a text editor and see if you can identify the different model components.
+
+
+> **Topic for discussion:** The Python script we used to create the configuration file only allows us to choose between a Jukes-Cantor or HKY substitution model, without any rate heterogeneity or invariant sites. In addition, it only allows one locus/partition in the alignment and uses a strict clock. It also doesn't give us any options for setting different priors or operators.
+>
+> Do you think there are situations where you would want to use a different site or clock model? What about the model priors? In particular, which priors would you want to change?
+>
+> Suppose you wanted to perform a SCOTTI analysis using a GTR substitution with a lognormal relaxed clock. How would you go about it?
+>
 
 
 
@@ -362,35 +376,34 @@ We see that in the MCC tree ([Figure 8](#fig:figtree)) one node is an unsampled 
 This displays respectively the set of hosts with a non-zero posterior probability and the posterior probability for those nodes. We see that although many internal nodes have a large set of possible hosts, only two or three hosts have reasonably large posterior probabilities for each internal node.
 
 
-## Constructing the transmission tree
+## Constructing the transmission network
+
+The MCC tree is a summary of the set of posterior trees. Although it is useful it is not necessarily the best way to look at the transmission tree. We will use a Python script to construct a transmission network that shows the probabilities of transmissions between every pair of farms. We will use the script `Make_transmission_tree_alternative.py`, which does not require any external packages. However, if you have installed the `graph-tool` package you may use the script `Make_transmission_tree.py`, which will produce better looking figures.
 
 
+> Open a terminal if you are using Mac OS X or Linux, or a Command Prompt if you are using Windows. 
+> 
+> Navigate to the directory where the `Make_transmission_tree_alternative.py` script is stored.
+>
+> Type in `python Make_transmission_tree_alternative.py --input ../precooked_runs/FMDV.trees --outputF FMDV_transmission --burnin 10`
+> 
 
+This will create 3 files:
 
+- `FMDV_transmission_direct_transmissions.jpg`
+- `FMDV_transmission_indirect_transmissions`
+- `FMDV_transmission_network.txt`
 
+<figure>
+  <a id="fig:hostsets"></a>
+  <img src="figures/FMDV_transmission_direct_transmissions.jpg" alt="">
+  <figcaption>Figure 9: The direct transmission network.</figcaption>
+</figure>
+<br>
 
-Possible unobserved hosts between IP2 and IP5
-Unobserved and non-sampled infections
+The network of direct transmissions is shown in [Figure 10](fig:transmissiontree1). By default only transmissions with a probability bigger than 10% are shown. We can identify a few key points from the transmission network. First, the chance of a direct transmission between the first and the second cluster (betwen IP2b and IP5) is quite low, thus there is a large chance that there are some non-sampled farms. Secondly, it appears likely that IP3b was responsible either directly or indirectly, for the infection of IP6b, IP7 and IP8. In several parts of the network there are a number of possible transmission routes, however in most cases one route is more likely than others. Thus, it is more likely that IP1b infected IP2c and that IP7 infected IP8 than vice-versa. It also appears likely that IP1b was the first infected farm. This information is also summarised in the text file `FMDV_transmission_network.txt`.
 
-
-Incubation 1-12 days (wiki)
-
-Day 0 on 2 August 2007
-IP1b sampled on day 3 and 4 (3 and 4 August)
-IP1b ends at day 7
-
-
-
-# Discussion
-
-HKY model with empirical frequencies and no rate heterogeneity
-No freedom on setting priors or anything else (input values or operators etc.)
-
-- May also want to include partitions
-- Change substitution model to GTR + gamma
-- Change clockrate prior (or modify the clock model)
-- Add updown operator
-
+Although this information is very useful for informing us about the transmission dynamics of an outbreak we should be careful not to over-interpret the results. There is still a lot of uncertainty in the transmission network, thus a link in the network does not necessarily indicate a definite transmission pair. Moreover, the presence of non-sampled hosts make it difficult to unambiguously identify transmission pairs or superspreaders.
 
 
 ----

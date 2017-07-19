@@ -411,7 +411,7 @@ Although this information is very useful for informing us about the transmission
 # Useful Links
 
 - SCOTTI website with documentation: [https://bitbucket.org/nicofmay/scotti/](https://bitbucket.org/nicofmay/scotti/)
-- [Bayesian Evolutionary Analysis with BEAST 2](http://www.beast2.org/book.html) {% cite BEAST2book2014 --file Tutorial-Template/master-refs.bib %}
+- [Bayesian Evolutionary Analysis with BEAST 2](http://www.beast2.org/book.html) {% cite BEAST2book2014 --file SCOTTI-Tutorial/master-refs.bib %}
 - BEAST 2 website and documentation: [http://www.beast2.org/](http://www.beast2.org/)
 - Join the BEAST user discussion: [http://groups.google.com/group/beast-users](http://groups.google.com/group/beast-users) 
 
@@ -419,6 +419,6 @@ Although this information is very useful for informing us about the transmission
 
 # Relevant References
 
-{% bibliography --cited --file Bacter-tutorial/master-refs %}
+{% bibliography --cited --file SCOTTI-Tutorial/master-refs %}
 
 

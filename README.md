@@ -11,17 +11,17 @@ scottiversion: 1.1.0
 
 # Background
 
-When applying phylodynamic models to pathogen genetic sequences collected during an outbreak we usually make the assumption that the inferred genealogy approximates the true transmission tree. In most cases the structure of the true transmission tree will be similar to the inferred genealogy and inferences about epidemiological parameters (e.g. the {% eqinline R_e %}) are valid. However, due to complicating factors, such as within-host diversity and evolution, non-sampled patients and transmission bottlenecks, it is difficult to reconstruct transmission chains or draw conclusions about the transmission dynamics between infected patients. In particular, there may be discrepancies between the epidemiological and phylogenetic relatedness of hosts and infection times are often biased.
+When applying phylodynamic models to pathogen genetic sequences collected during an outbreak, we usually make the assumption that the inferred genealogy approximates the true transmission tree. In most cases the structure of the true transmission tree will be similar to the inferred genealogy and inferences about epidemiological parameters (e.g. the {% eqinline R_e %}) are valid. However, due to complicating factors, such as within-host diversity and evolution, non-sampled patients and transmission bottlenecks, it is difficult to reconstruct transmission chains or draw conclusions about the transmission dynamics between infected patients. In particular, there may be discrepancies between the epidemiological and phylogenetic relatedness of hosts and infection times are often biased.
 
 SCOTTI (Structured COalescent Transmission Tree Inference) {% cite deMaio2016 --file SCOTTI-Tutorial/master-refs %} is a BEAST2 package that was developed to provide more accurate reconstructions of transmission trees.
-The underlying model is a structured coalescent model, where each host is modeled as a population and migrations between populations represent infections. 
+The underlying model is a structured coalescent model, where each host is modeled as a population and migrations between populations represent new infections. 
 New sequencing technologies and protocols are making it easier to sample the within-host diversity of an outbreak and SCOTTI can take advantage of multiple sequences from each host to better resolve transmission events.
-Furthermore, SCOTTI can model non-sampled hosts by dynamically increasing or decreasing the number of populations (hosts). (In other structured models in BEAST2 the number of populations remain constant and each population needs to be represented by at least one sampled sequence).
+Furthermore, SCOTTI can model non-sampled hosts by dynamically increasing or decreasing the number of populations (hosts). (In other structured models available in BEAST2 the number of populations remain constant and each population needs to be represented by at least one sampled sequence).
 In addition to genetic sequences, SCOTTI also uses epidemiological data about host exposure times, only allowing hosts to transmit the disease during periods when they are infectious.
 Thus, SCOTTI is able to model within-host diversity as well as non-sampled hosts and multiply infected hosts. However, it is currently not able to model transmission bottlenecks.
 
 To make the inference tractable SCOTTI uses the same techniques as BASTA {% cite deMaio2015 --file SCOTTI-Tutorial/master-refs %}, which is a computationally efficient approximation to the structured coalescent. 
-In addition, a number of simplifying constraints are assumed. 
+In addition, a number of simplifying assumptions are made. 
 It is assumed that all hosts have the same infection rate and that it stays constant over the course of infection. It is also assumed that infection is equally likely between every pair of hosts.
 Finally, it is assumed that all hosts have the same effective population size, {% eqinline N_e %}. Thus, all hosts have the same within-host genetic diversity and thus all hosts have equal and constant within-host dynamics.
 
@@ -60,7 +60,7 @@ FigTree ([http://tree.bio.ed.ac.uk/software/figtree](http://tree.bio.ed.ac.uk/so
 
 ### Python
 
-Python ([https://www.python.org](https://www.python.org)) is an interpreted programming language that is often used to write scripts for processing text files. We will use two Python scripts during the tutorial. Both scripts should work with Python 2.7.x and Python 3.x. There is also a third, optional, script that makes use of the `graph-tool` package to produce a nicer figure.
+Python ([https://www.python.org](https://www.python.org)) is an interpreted programming language that is often used to write scripts for processing text files. We will use two Python scripts during the tutorial. Both scripts should work with Python 2.7.x and Python 3.x. There is also a third, optional, script that makes use of the `graph-tool` package to produce a better looking figure.
 
 Python should already be installed on most Mac OS X or Linux systems.
 
@@ -69,7 +69,7 @@ Python should already be installed on most Mac OS X or Linux systems.
 
 # Practical: SCOTTI tutorial
 
-In this tutorial we analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in the South of England in 2007. FMDV is a highly infectious disease that affects cloven-hoofed animals (such as cattle, sheep, pigs, deer etc.) and can easily be spread between farms through contact with contaminated vehicles or animal feed. 
+In this tutorial we analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in the South of England in 2007. FMDV is a highly infectious disease that affects cloven-hoofed animals (such as cattle, sheep, pigs, deer etc.) and can be easily spread between farms through contact with contaminated vehicles or animal feed. 
 The usual response to FMDV is to cull all exposed livestock and quarantine surrounding farms, thus the effects of the disease can be devastating to the farming sector (the 2001 outbreak in the United Kingdom resulted in the culling of more than 10 million cows and sheep and cost £8 billion). 
 It is therefore extremely important to trace the source and spread of the disease between farms. 
 Because of the high genetic variability of FMDV an appreciable amount of genetic variation will accumulate over the course of an outbreak. Thus, epidemiological and evolutionary dynamics occur on the same timescale and we are dealing with a measurably evolving population, which we can analyse in BEAST. 
@@ -79,14 +79,14 @@ When analysing an FMDV outbreak we can treat each infected farm as an infected h
 
 ## The Data
 
-We analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in the South of England. The outbreak contained two distinct clusters, in August and September of 2007, respectively. The dataset contains 11 viral sequences from 10 farms. Four sequences were sampled during the first cluster and a further 7 during the second cluster. In addition, we also have the earliest and latest possible dates during which each farm was infected with the disease. The data were first analysed in {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %} and later reanalysed using SCOTTI in {% cite deMaio2016 --file SCOTTI-Tutorial/master-refs %}. 
+We analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in the South of England. The outbreak contained two distinct clusters, in August and September of 2007, respectively. The dataset contains 11 viral sequences from 10 farms. Four sequences were sampled during the first cluster and a further 7 during the second cluster. In addition, we also have the earliest and latest possible dates during which each farm was infected with the disease ([Figure 1](#fig:outbreak)). The data were first analysed in {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %} and later reanalysed using SCOTTI in {% cite deMaio2016 --file SCOTTI-Tutorial/master-refs %}. 
 
 
 <figure>
   <a id="fig:outbreak"></a>
   <img style="width:80.0%;" src="figures/Outbreak.png" alt="">
   <figcaption>Figure 1: Exposure times of infected farms and sampling dates of the viral sequences (Figure taken from {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %}). The orange shading estimates the time when animals showing symptoms of FMDV were present on a farm. Light blue shading indicates estimates for the incubation time of each farm. The dark blue shading is the infection date estimates in {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %}. The haplotype network of the sequenced strains is superimposed on the exposure times. The red dots indicate the dates of the sampled sequences.
-.</figcaption>
+</figcaption>
 </figure>
 <br>
 
@@ -95,12 +95,12 @@ We analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in t
 
 Unlike most BEAST2 packages, SCOTTI does not have a BEAUti interface. Although a BEAUti interface makes it much easier, it is not the only way to create the input XML file for a BEAST2 analysis. 
 Many advanced users prefer to create the XML file in a text editor as this provides them with greater flexibility and oversight. Even if you use BEAUti to create your configuration files it is always a good idea to open the XML file in a text editor and check that everything is where it should be.
-At first a BEAST2 XML file may seem bewildering, but the file has a rigid structure and after a while you will be able to interpret the different elements of the configuration file.
+At first glance a BEAST2 XML file may seem bewildering, but the file has a rigid structure and after a while you will be able to interpret the different elements of the configuration file.
 Being able to read and understand a configuration file gives you a much better understanding of how the different parts of an analysis fit together.
 In addition, it gives you access to models (such as SCOTTI) that do not have BEAUti interfaces.
 Once you are familiar with the structure of BEAST2 XML files and you know the different inputs of the models you want to use you will find that it is often faster to directly edit an XML file than to create it in BEAUti. 
 
-In this tutorial we we will start at the shallow end of the pool and use a Python script to create the XML configuration file. We will use the Python script `SCOTTI_generate_xml.py` to generate the XML file. It is included with the SCOTTI package and is also stored in the `scripts/` directory of this tutorial. 
+In this tutorial we we will start at the shallow end of the pool and use a Python script, `SCOTTI_generate_xml.py`, to create the XML configuration file. It is included with the SCOTTI package and is also stored in the `scripts/` directory of this tutorial. 
 
 
 ### Installing the SCOTTI package
@@ -244,7 +244,7 @@ IP8, 43.0, 63.0
 
 ```
 
-Note that the script assumes that times are specified forward-in-time, thus the largest times are the ones closest to the present. In this analysis we specify time in days from the start of the outbreak (day 0). Thus, in the hosttimes file, where times are negative, that indicates that we believe those farms could have been infected weeks before the outbreak was first detected. 
+Note that the script assumes that times are specified forward-in-time, thus the largest times are the ones closest to the present. In this analysis we specify time in days from the start of the outbreak (day 0). Thus, in the hostTimes file, where times are negative, that indicates that we believe those farms could have been infected weeks before the outbreak was first detected. 
 
 > Type in:
 > 
@@ -256,7 +256,7 @@ This will create the input XML file for the BEAST2 analysis. You may have to cha
 - `--output`: The name of the output XML file and the `.log` and `.tree` files that will be produced by BEAST2.
 - `--maxHosts`: The maximum number of hosts in the outbreak, including observed and unobserved hosts. Since we have data from 10 farms and no cases were found in any other farms it is unlikely that more than 20 farms were infected. We can also make the analysis run faster by restricting the maximum number of hosts to a smaller number.
 - `--numIter`: We restrict the length of the chain to 2'000'000 states.
-- `--traceLog`, `--treelog`, `--screenlog`: The frequency at which states are saved in the log file and tree files or output to the screen. By default the Python script will scale these frequencies to log 10'000 states and 1'000 trees. Since our chain only includes 2'000'000 states this results in states being sampled too frequently which results in a high auto-correlation and low ESS values.
+- `--traceLog`, `--treelog`, `--screenlog`: The frequency at which states are saved in the log file and tree files or output to the screen. By default the Python script will scale these frequencies to log 10'000 states and 1'000 trees. Since our chain only includes 2'000'000 states this results in states being sampled too frequently which in turn results in high auto-correlation between sampled states and low ESS values.
 
 
 > **Topic for discussion:** Read the help for the `--unlimLife` and `--penalizeMigration` input arguments to the Python script. Can you figure out what these arguments do? How do you think setting these arguments to true will affect the results?
@@ -267,7 +267,7 @@ This will create the input XML file for the BEAST2 analysis. You may have to cha
 
 We should now be ready to run the analysis in BEAST2. 
 
-> Open BEAST2 and choose `FMDV.xml` as the BEAST XML file. If BEAGLE is installed check the box to use it. Then click **Run** ([Figure 3](#fig:beastmcmc)). 
+> Open **BEAST2** and choose `FMDV.xml` as the BEAST XML file. If BEAGLE is installed check the box to use it. Then click **Run** ([Figure 3](#fig:beastmcmc)). 
 > 
 
 <figure>
@@ -280,7 +280,7 @@ We should now be ready to run the analysis in BEAST2.
 The analysis should take between 10 and 20 minutes to run. While the analysis is running open the XML file in a text editor and see if you can identify the different model components.
 
 
-> **Topic for discussion:** The Python script we used to create the configuration file only allows us to choose between a Jukes-Cantor or HKY substitution model, without any rate heterogeneity or invariant sites. In addition, it only allows one locus/partition in the alignment and uses a strict clock. It also doesn't give us any options for setting different priors or operators.
+> **Topic for discussion:** The Python script we used to create the configuration file only allows us to choose between a Jukes-Cantor or HKY site model, without any rate heterogeneity or invariant sites. In addition, it only allows one locus/partition in the alignment and uses a strict clock. It also doesn't give us any options for setting different priors or operators.
 >
 > Do you think there are situations where you would want to use a different site or clock model? What about the model priors? In particular, which priors would you want to change?
 >
@@ -329,7 +329,7 @@ This parameter estimates the number of hosts in the outbreak. It is bounded belo
 </figure>
 <br>
 
-This parameter is the TMRCA of the sequences included in the transmission tree. The median estimate is 67.39 days. Since the most recent sample was taken on day 62 of the outbreak (`IP8-62`), this indicates that the outbreak probably did not start more than a week before it was first confirmed, which is an encouraging result for the surveillance of foot and mouth disease. 
+This parameter is the TMRCA of the sequences included in the transmission tree. The median estimate is 67.39 days. Since the most recent sample was taken on day 62 of the outbreak (IP8-62), this indicates that the outbreak probably did not start more than a week before it was first confirmed, which is an encouraging sign for the surveillance of foot and mouth disease. 
 
 
 

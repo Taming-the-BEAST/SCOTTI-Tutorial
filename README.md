@@ -189,6 +189,7 @@ The dates, hosts and hostTimes files need to be csv-files (comma-separated value
 The sequence file:
 
 ```
+
 >IP3c-46
 -----------------GGTCTCACCCCTAGTAAGCCAACGACAGTCCCTGCGTTGCACTCCACA...
 >IP5-51
@@ -220,6 +221,7 @@ IP6b-54, 54.0
 The hosts file:
 
 ```
+
 IP1b-3, IP1b
 IP1b-4, IP1b
 IP2b-6, IP2b
@@ -356,7 +358,7 @@ This parameter is the TMRCA of the sequences included in the transmission tree. 
 
 <figure>
   <a id="fig:figtree"></a>
-  <img style="width:80.0%;" src="figures/FigTree.png" alt="">
+  <img style="width:100.0%;" src="figures/FigTree.png" alt="">
   <figcaption>Figure 8: The MCC tree in FigTree.</figcaption>
 </figure>
 <br>
@@ -368,7 +370,7 @@ We see that in the MCC tree ([Figure 8](#fig:figtree)) one node is an unsampled 
 
 <figure>
   <a id="fig:hostsets"></a>
-  <img style="width:80.0%;" src="figures/FigTreeSet.png" alt="">
+  <img style="width:100.0%;" src="figures/FigTreeSet.png" alt="">
   <figcaption>Figure 9: The sets of probable hosts in FigTree.</figcaption>
 </figure>
 <br>

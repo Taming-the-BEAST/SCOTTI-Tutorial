@@ -6,7 +6,7 @@ subtitle: Transmission tree reconstruction with the structured coalescent
 beastversion: 2.4.7
 tracerversion: 1.6.0
 figtreeversion: 1.4.3
-scottiversion: 1.1.0
+scottiversion: 1.1.1
 ---
 
 # Background
@@ -274,12 +274,12 @@ We should now be ready to run the analysis in BEAST2.
 
 <figure>
   <a id="fig:beastmcmc"></a>
-  <img style="width:50.0%;" src="figures/BEASTMCMC.png" alt="">
+  <img style="width:50.0%;" src="figures/BEASTMCMCseed.png" alt="">
   <figcaption>Figure 3: Running the analysis in BEAST2.</figcaption>
 </figure>
 <br>
 
-The analysis should take between 10 and 20 minutes to run. While the analysis is running open the XML file in a text editor and see if you can identify the different model components.
+If you use the seed 2007 you should be able to duplicate the results in the next section. The analysis should take between 10 and 20 minutes to run. While the analysis is running open the XML file in a text editor and see if you can identify the different model components.
 
 
 > **Topic for discussion:** The Python script we used to create the configuration file only allows us to choose between a Jukes-Cantor or HKY site model, without any rate heterogeneity or invariant sites. In addition, it only allows one locus/partition in the alignment and uses a strict clock. It also doesn't give us any options for setting different priors or operators.
@@ -331,7 +331,7 @@ This parameter estimates the number of hosts in the outbreak. It is bounded belo
 </figure>
 <br>
 
-This parameter is the TMRCA of the sequences included in the transmission tree. The median estimate is 67.39 days. Since the most recent sample was taken on day 62 of the outbreak (IP8-62), this indicates that the outbreak probably did not start more than a week before it was first confirmed, which is an encouraging sign for the surveillance of foot and mouth disease. 
+This parameter is the TMRCA of the sequences included in the transmission tree. The median estimate is 67.36 days. Since the most recent sample was taken on day 62 of the outbreak (IP8-62), this indicates that it is unlikely that the outbreak started more than a week before it was discovered and confirmed, which is an encouraging sign for the surveillance of foot and mouth disease in the United Kingdom. 
 
 
 
@@ -349,7 +349,7 @@ This parameter is the TMRCA of the sequences included in the transmission tree. 
 
 > Open **FigTree** and load `FMDV.MCC.tree`.
 > 
-> Click on the arrow to the right **Appearance** and in the **Colour by** dropdown box select **host**. Check **Gradient** and change the **Line Weight** to **5**. 
+> Click on the arrow to the right **Appearance** and in the **Colour by** dropdown box select **host**. Check **Gradient** and increase the **Line Weight** to **5**. 
 >
 > Increase the **Font Size** under **Tip Labels**. Check **Node Labels** and select **host.prob** from the dropdown box and increase the **Font size**.
 > 
@@ -363,7 +363,7 @@ This parameter is the TMRCA of the sequences included in the transmission tree. 
 </figure>
 <br>
 
-We see that in the MCC tree ([Figure 8](#fig:figtree)) one node is an unsampled node (between the two outbreak clusters). Thus, there is evidence of a non-sampled farm between IP2b and IP5. We also see that while the posterior probabilities for some internal nodes are quite high, it is below 0.5 for several nodes. Note that since SCOTTI does not model the transmission bottleneck it cannot estimate the time of infection. Thus, it is better to display the tree with a gradient between hosts than with a discrete colouring. 
+We see that in the MCC tree ([Figure 8](#fig:figtree)) one node is an unsampled node (between the two outbreak clusters). Thus, there is evidence of a non-sampled farm between IP2b and IP5. We further see that while the posterior probabilities for some internal nodes are quite high, it is below 0.5 for several nodes. Note that since SCOTTI does not model the transmission bottleneck it cannot estimate the time of infection. Thus, it is better to display the tree with a gradient between hosts than with a discrete colouring. 
 
 > Under **Node Labels** change the **Display** attribute first to **host.set** and then to **host.set.prob** ([Figure 9](#fig:hostsets))
 >
@@ -403,7 +403,7 @@ This will create 3 files:
 </figure>
 <br>
 
-The network of direct transmissions is shown in [Figure 10](fig:transmissiontree1). By default only transmissions with a probability bigger than 10% are shown. We can identify a few key points from the transmission network. First, the chance of a direct transmission between the first and the second cluster (betwen IP2b and IP5) is quite low, thus there is a large chance that there are some non-sampled farms. Secondly, it appears likely that IP3b was responsible either directly or indirectly, for the infection of IP6b, IP7 and IP8. In several parts of the network there are a number of possible transmission routes, however in most cases one route is more likely than others. Thus, it is more likely that IP1b infected IP2c and that IP7 infected IP8 than vice-versa. It also appears likely that IP1b was the first infected farm. This information is also summarised in the text file `FMDV_transmission_network.txt`.
+The network of direct transmissions is shown in [Figure 10](fig:transmissiontree1). By default only transmissions with a probability bigger than 10% are shown. We can identify a few key points from the transmission network. First, the chance of a direct transmission between the first and the second cluster (betwen IP2b and IP5) is quite low, thus there is a large chance that there are some non-sampled farms. There also appears to be evidence for non-sampled farm(s) between IP5 and the other farms in the second cluster. Secondly, it appears likely that IP3b was responsible either directly or indirectly, for the infection of IP6b, IP7 and IP8. In several parts of the network there are a number of possible transmission routes, however in most cases one route is more likely than others. For example, it is more likely that IP1b infected IP2c and that IP7 infected IP8 than vice-versa. It also appears likely that IP1b was the first infected farm. This information is also summarised in the text file `FMDV_transmission_network.txt`.
 
 Although this information is very useful for informing us about the transmission dynamics of an outbreak we should be careful not to over-interpret the results. There is still a lot of uncertainty in the transmission network, thus a link in the network does not necessarily indicate a definite transmission pair. Moreover, the presence of non-sampled hosts make it difficult to unambiguously identify transmission pairs or superspreaders.
 

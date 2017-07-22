@@ -250,7 +250,7 @@ Note that the script assumes that times are specified forward-in-time, thus the 
 
 > Type in:
 > 
-> `python SCOTTI_generate_xml.py --fasta ../data/FMDV.fasta  --dates ../data/FMDV_dates.xml --hosts ../data/FMDV_hosts.csv --hostTimes ../data/FMDV_hostTimes.csv --output FMDV --maxHosts 20 --numIter 2000000 --tracelog 2000 --treelog 20000 --screenlog 20000`
+> `python SCOTTI_generate_xml.py --fasta ../data/FMDV.fasta  --dates ../data/FMDV_dates.csv --hosts ../data/FMDV_hosts.csv --hostTimes ../data/FMDV_hostTimes.csv --output FMDV --maxHosts 20 --numIter 2000000 --tracelog 2000 --treelog 20000 --screenlog 20000`
 > 
 
 This will create the input XML file for the BEAST2 analysis. You may have to change the paths to the input files before the command will work (the `--fasta`, `--dates`, `--hosts` and `--hostTimes` arguments). We also specified the following additional optional arguments:

@@ -401,7 +401,7 @@ outbreak was first detected.
 \begin{framed}
 Type in:
 
-\lstinline!python SCOTTI_generate_xml.py --fasta ../data/FMDV.fasta  --dates ../data/FMDV_dates.xml --hosts ../data/FMDV_hosts.csv --hostTimes ../data/FMDV_hostTimes.csv --output FMDV --maxHosts 20 --numIter 2000000 --tracelog 2000 --treelog 20000 --screenlog 20000!
+\lstinline!python SCOTTI_generate_xml.py --fasta ../data/FMDV.fasta  --dates ../data/FMDV_dates.csv --hosts ../data/FMDV_hosts.csv --hostTimes ../data/FMDV_hostTimes.csv --output FMDV --maxHosts 20 --numIter 2000000 --tracelog 2000 --treelog 20000 --screenlog 20000!
 \end{framed}
 
 This will create the input XML file for the BEAST2 analysis. You may
@@ -620,9 +620,11 @@ useful it is not necessarily the best way to look at the transmission
 tree. We will use a Python script to construct a transmission network
 that shows the probabilities of transmissions between every pair of
 farms. We will use the script
-\lstinline!Make_transmission_tree_alternative.py!, which does not
-require any external packages. However, if you have installed the
-\lstinline!graph-tool! package you may use the script
+\lstinline!Make_transmission_tree_alternative.py!, which uses the
+\lstinline!graphviz! package. If this package is not installed you will
+have to install it, either through homebrew or by installing the
+Anaconda Python distribution. Alternatively, if you have previously
+installed the \lstinline!graph-tool! package you may use the script
 \lstinline!Make_transmission_tree.py!, which will produce better looking
 figures.
 

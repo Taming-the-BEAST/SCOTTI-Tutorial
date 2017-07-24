@@ -406,7 +406,7 @@ This will create 3 files:
 <figure>
   <a id="fig:hostsets"></a>
   <img src="figures/FMDV_transmission_direct_transmissions.jpg" alt="">
-  <figcaption>Figure 9: The direct transmission network using `Make_transmission_tree_alternative.py`.</figcaption>
+  <figcaption>Figure 9: The direct transmission network using graphviz (Make_transmission_tree_alternative.py).</figcaption>
 </figure>
 <br>
 
@@ -414,7 +414,7 @@ This will create 3 files:
 <figure>
   <a id="fig:hostsets"></a>
   <img src="figures/FMDV3_out_direct_transmissions.png" alt="">
-  <figcaption>Figure 10: The direct transmission network using `Make_transmission_tree.py`.</figcaption>
+  <figcaption>Figure 10: The direct transmission network using graph-tool (Make_transmission_tree.py).</figcaption>
 </figure>
 <br>
 

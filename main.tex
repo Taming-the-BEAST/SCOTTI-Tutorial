@@ -33,7 +33,7 @@
 	\vspace{4mm}
 
 	% Enter the names of all the authors here
-	{\Large {\em Louis du Plessis}}
+	{\Large {\em Louis du Plessis and Nicola de Maio}}
 \end{center}
 
 Transmission tree reconstruction with the structured coalescent
@@ -151,6 +151,8 @@ script that makes use of the \lstinline!graph-tool! package to produce a
 better looking figure.
 
 Python should already be installed on most Mac OS X or Linux systems.
+Both graphviz and graph-tool are available on Homebrew, and graphviz can
+also be installed using \lstinline!apt-get! on Linux systems.
 
 \clearpage
 
@@ -188,10 +190,10 @@ clusters, in August and September of 2007, respectively. The dataset
 contains 11 viral sequences from 10 farms. Four sequences were sampled
 during the first cluster and a further 7 during the second cluster. In
 addition, we also have the earliest and latest possible dates during
-which each farm was infected with the disease (Figure
-\ref{fig:outbreak}). The data were first analysed in
-\citep{Cottam2008PlosPath} and later reanalysed using SCOTTI in
-\citep{deMaio2016}.
+which each farm was infected with the disease, informed by the culling
+time and first appearance of symptoms (Figure \ref{fig:outbreak}). The
+data were first analysed in \citep{Cottam2008PlosPath} and later
+reanalysed using SCOTTI in \citep{deMaio2016}.
 
 \begin{figure}
     \centering
@@ -517,18 +519,23 @@ of the panel (Figure \ref{fig:numPops}).
 
 This parameter estimates the number of hosts in the outbreak. It is
 bounded below by 10 (the number of sampled farms) and above by 20, which
-was our input upper bound. We see that there appears to be significant
-support for almost twice as many farms to have been infected as farms
-where diseased animals were found. The parameter
-\textbf{migModel.popSize} logs the effective population size of the
-hosts, which is directly proportional to the genetic diversity of the
-virus within each farm. We see that the effective population size is
-quite low, which is probably due to the relatively short period of the
-outbreak. The equal infection rate between farms is logged by
-\textbf{migModel.rateMig} and the clock rate by \textbf{mutationRate}.
-If the clock rate seems low for a virus, keep in mind that we measure
-time in days. Thus, the units for substitutions are in
-substitutions/site/day instead of the usual substitutions/site/year.
+was our input upper bound. However, it is difficult to interpret this
+parameter as the number of farms that were infected, because (i) one
+non-sampled deme may actually represent a series of hosts with no time
+overlap, or a single host with unlimited exposure time (like
+environmental contamination); (ii) non-sampled hosts are not necessarily
+infected; (iii) many non-sampled hosts might just represent one host
+with large population size, like an environmental endemic source.
+
+The parameter \textbf{migModel.popSize} logs the effective population
+size of the hosts, which is directly proportional to the genetic
+diversity of the virus within each farm. We see that the effective
+population size is quite low, which is probably due to the relatively
+short period of the outbreak. The equal infection rate between farms is
+logged by \textbf{migModel.rateMig} and the clock rate by
+\textbf{mutationRate}. If the clock rate seems low for a virus, keep in
+mind that we measure time in days. Thus, the units for substitutions are
+in substitutions/site/day instead of the usual substitutions/site/year.
 
 \begin{framed}
 Select \textbf{tree.height} (Figure \ref{fig:tmrca})
@@ -542,11 +549,12 @@ Select \textbf{tree.height} (Figure \ref{fig:tmrca})
 \end{figure}
 
 This parameter is the TMRCA of the sequences included in the
-transmission tree. The median estimate is 67.36 days. Since the most
-recent sample was taken on day 62 of the outbreak (IP8-62), this
-indicates that it is unlikely that the outbreak started more than a week
-before it was discovered and confirmed, which is an encouraging sign for
-the surveillance of foot and mouth disease in the United Kingdom.
+transmission tree. The median estimate is 67.36 days, with a 95\% HPD
+between 60.76 and 78.55 days. Since the most recent sample was taken on
+day 62 of the outbreak (IP8-62), this indicates that it is unlikely that
+the outbreak started more than a week before it was discovered and
+confirmed, which is an encouraging sign for the surveillance of foot and
+mouth disease in the United Kingdom.
 
 \begin{framed}
 Open \textbf{TreeAnnotator} and set the \textbf{Burnin percentage} to
@@ -570,9 +578,13 @@ Click on the arrow to the right \textbf{Appearance} and in the
 \textbf{Colour by} dropdown box select \textbf{host}. Check
 \textbf{Gradient} and increase the \textbf{Line Weight} to \textbf{5}.
 
-Increase the \textbf{Font Size} under \textbf{Tip Labels}. Check
-\textbf{Node Labels} and select \textbf{host.prob} from the dropdown box
-and increase the \textbf{Font size}.
+Increase the \textbf{Font Size} under \textbf{Tip Labels} and change
+\textbf{Display} to \textbf{host}. Check \textbf{Node Labels} and select
+\textbf{host.prob} from the dropdown box and increase the \textbf{Font
+size}.
+
+Under \textbf{Node Shape} select \textbf{Circle} and set the size by
+\textbf{host.prob} and the colour by \textbf{host}.
 
 Check \textbf{Legend} and select \textbf{host} as \textbf{Attribute}.
 \end{framed}
@@ -622,7 +634,7 @@ that shows the probabilities of transmissions between every pair of
 farms. We will use the script
 \lstinline!Make_transmission_tree_alternative.py!, which uses the
 \lstinline!graphviz! package. If this package is not installed you will
-have to install it, either through homebrew or by installing the
+have to install it, either through Homebrew or by installing the
 Anaconda Python distribution. Alternatively, if you have previously
 installed the \lstinline!graph-tool! package you may use the script
 \lstinline!Make_transmission_tree.py!, which will produce better looking
@@ -654,7 +666,14 @@ This will create 3 files:
 \begin{figure}
     \centering
     \includegraphics[max width=\textwidth, max height=0.9\textheight]{figures/FMDV_transmission_direct_transmissions.jpg}
-    \caption{The direct transmission network.}
+    \caption{The direct transmission network using graphviz.}
+    \label{fig:hostsets}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[max width=\textwidth, max height=0.9\textheight]{figures/FMDV3_out_direct_transmissions.png}
+    \caption{The direct transmission network using graph-tool.}
     \label{fig:hostsets}
 \end{figure}
 
@@ -710,7 +729,7 @@ transmission pairs or superspreaders.
 % Please do not change the license
 % Add the author names and relevant links
 % Add any other aknowledgments here
-\href{http://creativecommons.org/licenses/by/4.0/}{\includegraphics[scale=0.8]{figures/ccby.pdf}} This tutorial was written by Louis du Plessis for \href{https://taming-the-beast.github.io}{Taming the BEAST} and is licensed under a \href{http://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International License}. 
+\href{http://creativecommons.org/licenses/by/4.0/}{\includegraphics[scale=0.8]{figures/ccby.pdf}} This tutorial was written by Louis du Plessis and Nicola de Maio for \href{https://taming-the-beast.github.io}{Taming the BEAST} and is licensed under a \href{http://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International License}. 
 
 
 %%%%%%%%%%%%%%%%%%%%

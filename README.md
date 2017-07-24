@@ -385,7 +385,7 @@ This displays respectively the set of hosts with a non-zero posterior probabilit
 
 ## Constructing the transmission network
 
-The MCC tree is a summary of the set of posterior trees. Although it is useful it is not necessarily the best way to look at the transmission tree. We will use a Python script to construct a transmission network that shows the probabilities of transmissions between every pair of farms. We will use the script `Make_transmission_tree_alternative.py`, which uses the `graphviz` package. If this package is not installed you will have to install it, either through homebrew or by installing the Anaconda Python distribution. Alternatively, if you have previously installed the `graph-tool` package you may use the script `Make_transmission_tree.py`, which will produce better looking figures.
+The MCC tree is a summary of the set of posterior trees. Although it is useful it is not necessarily the best way to look at the transmission tree. We will use a Python script to construct a transmission network that shows the probabilities of transmissions between every pair of farms. We will use the script `Make_transmission_tree_alternative.py`, which uses the `graphviz` package. If this package is not installed you will have to install it, either through Homebrew or by installing the Anaconda Python distribution. Alternatively, if you have previously installed the `graph-tool` package you may use the script `Make_transmission_tree.py`, which will produce better looking figures.
 
 
 > Open a terminal if you are using Mac OS X or Linux, or a Command Prompt if you are using Windows. 
@@ -401,10 +401,20 @@ This will create 3 files:
 - `FMDV_transmission_indirect_transmissions`
 - `FMDV_transmission_network.txt`
 
+
+
 <figure>
   <a id="fig:hostsets"></a>
   <img src="figures/FMDV_transmission_direct_transmissions.jpg" alt="">
-  <figcaption>Figure 9: The direct transmission network.</figcaption>
+  <figcaption>Figure 9: The direct transmission network using `Make_transmission_tree_alternative.py`.</figcaption>
+</figure>
+<br>
+
+
+<figure>
+  <a id="fig:hostsets"></a>
+  <img src="figures/FMDV3_out_direct_transmissions.png" alt="">
+  <figcaption>Figure 10: The direct transmission network using `Make_transmission_tree.py`.</figcaption>
 </figure>
 <br>
 

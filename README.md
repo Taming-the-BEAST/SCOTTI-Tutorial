@@ -1,5 +1,5 @@
 ---
-author: Louis du Plessis
+author: Louis du Plessis,Nicola de Maio
 level: Professional
 title: SCOTTI Tutorial
 subtitle: Transmission tree reconstruction with the structured coalescent
@@ -62,7 +62,7 @@ FigTree ([http://tree.bio.ed.ac.uk/software/figtree](http://tree.bio.ed.ac.uk/so
 
 Python ([https://www.python.org](https://www.python.org)) is an interpreted programming language that is often used to write scripts for processing text files. We will use two Python scripts during the tutorial. Both scripts should work with Python 2.7.x and Python 3.x. There is also a third, optional, script that makes use of the `graph-tool` package to produce a better looking figure.
 
-Python should already be installed on most Mac OS X or Linux systems.
+Python should already be installed on most Mac OS X or Linux systems. Both graphviz and graph-tool are available on Homebrew, and graphviz can also be installed using `apt-get` on Linux systems.
 
 
 ----
@@ -79,7 +79,7 @@ When analysing an FMDV outbreak we can treat each infected farm as an infected h
 
 ## The Data
 
-We analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in the South of England. The outbreak contained two distinct clusters, in August and September of 2007, respectively. The dataset contains 11 viral sequences from 10 farms. Four sequences were sampled during the first cluster and a further 7 during the second cluster. In addition, we also have the earliest and latest possible dates during which each farm was infected with the disease ([Figure 1](#fig:outbreak)). The data were first analysed in {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %} and later reanalysed using SCOTTI in {% cite deMaio2016 --file SCOTTI-Tutorial/master-refs %}. 
+We analyse an outbreak of Foot and Mouth Disease Virus (FMDV) that occurred in the South of England. The outbreak contained two distinct clusters, in August and September of 2007, respectively. The dataset contains 11 viral sequences from 10 farms. Four sequences were sampled during the first cluster and a further 7 during the second cluster. In addition, we also have the earliest and latest possible dates during which each farm was infected with the disease, informed by the culling time and first appearance of symptoms ([Figure 1](#fig:outbreak)). The data were first analysed in {% cite Cottam2008PlosPath --file SCOTTI-Tutorial/master-refs %} and later reanalysed using SCOTTI in {% cite deMaio2016 --file SCOTTI-Tutorial/master-refs %}. 
 
 
 <figure>
@@ -319,7 +319,10 @@ The Python script only logs a few key parameters ([Figure 4](#fig:tracer)). Note
 <br>
 
 
-This parameter estimates the number of hosts in the outbreak. It is bounded below by 10 (the number of sampled farms) and above by 20, which was our input upper bound. We see that there appears to be significant support for almost twice as many farms to have been infected as farms where diseased animals were found. The parameter **migModel.popSize** logs the effective population size of the hosts, which is directly proportional to the genetic diversity of the virus within each farm. We see that the effective population size is quite low, which is probably due to the relatively short period of the outbreak. The equal infection rate between farms is logged by **migModel.rateMig** and the clock rate by **mutationRate**. If the clock rate seems low for a virus, keep in mind that we measure time in days. Thus, the units for substitutions are in substitutions/site/day instead of the usual substitutions/site/year.
+This parameter estimates the number of hosts in the outbreak. It is bounded below by 10 (the number of sampled farms) and above by 20, which was our input upper bound. 
+However, it is difficult to interpret this parameter as the number of farms that were infected, because (i) one non-sampled deme may actually represent a series of hosts with no time overlap, or a single host with unlimited exposure time (like environmental contamination); (ii) non-sampled hosts are not necessarily infected; (iii) many non-sampled hosts might just represent one host with large population size, like an environmental endemic source.
+
+The parameter **migModel.popSize** logs the effective population size of the hosts, which is directly proportional to the genetic diversity of the virus within each farm. We see that the effective population size is quite low, which is probably due to the relatively short period of the outbreak. The equal infection rate between farms is logged by **migModel.rateMig** and the clock rate by **mutationRate**. If the clock rate seems low for a virus, keep in mind that we measure time in days. Thus, the units for substitutions are in substitutions/site/day instead of the usual substitutions/site/year.
 
 > Select **tree.height** ([Figure 6](#fig:tmrca))
 >
@@ -331,7 +334,7 @@ This parameter estimates the number of hosts in the outbreak. It is bounded belo
 </figure>
 <br>
 
-This parameter is the TMRCA of the sequences included in the transmission tree. The median estimate is 67.36 days. Since the most recent sample was taken on day 62 of the outbreak (IP8-62), this indicates that it is unlikely that the outbreak started more than a week before it was discovered and confirmed, which is an encouraging sign for the surveillance of foot and mouth disease in the United Kingdom. 
+This parameter is the TMRCA of the sequences included in the transmission tree. The median estimate is 67.36 days, with a 95% HPD between 60.76 and 78.55 days. Since the most recent sample was taken on day 62 of the outbreak (IP8-62), this indicates that it is unlikely that the outbreak started more than a week before it was discovered and confirmed, which is an encouraging sign for the surveillance of foot and mouth disease in the United Kingdom. 
 
 
 
@@ -351,8 +354,10 @@ This parameter is the TMRCA of the sequences included in the transmission tree. 
 > 
 > Click on the arrow to the right **Appearance** and in the **Colour by** dropdown box select **host**. Check **Gradient** and increase the **Line Weight** to **5**. 
 >
-> Increase the **Font Size** under **Tip Labels**. Check **Node Labels** and select **host.prob** from the dropdown box and increase the **Font size**.
+> Increase the **Font Size** under **Tip Labels** and change **Display** to **host**. Check **Node Labels** and select **host.prob** from the dropdown box and increase the **Font size**.
 > 
+> Under **Node Shape** select **Circle** and set the size by **host.prob** and the colour by **host**. 
+>
 > Check **Legend** and select **host** as **Attribute**.
 > 
 

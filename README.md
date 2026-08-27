@@ -1,12 +1,23 @@
 ---
 author: Louis du Plessis,Nicola de Maio
-level: Professional
 title: SCOTTI Tutorial
 subtitle: Transmission tree reconstruction with the structured coalescent
-beastversion: 2.4.7
 tracerversion: 1.6.0
 figtreeversion: 1.4.3
 scottiversion: 1.1.1
+beastversion_tutorial: 2.4.7
+workflow: Advanced analysis
+status: current
+keywords:
+- structured coalescent
+- transmission tree
+- migration
+- population structure
+packages:
+- SCOTTI
+domains:
+- epidemiology
+beastversion_package: '2.7'
 ---
 
 # Background
